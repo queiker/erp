@@ -41,68 +41,73 @@ def update_customer():
         view.print_message(f"({d}) {list_of_customers[d]}")
     #pobranie od użytkownika numeru klienta do zmiany danych
     to_update = input("Put number of customer to update : ")
-    #zmiana danych klienta
-    print(list_of_customers[int(to_update)][1])
-    nowa_wartosc = input("Put new name1 : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][1] = nowa_wartosc
+    
+    
+    #zmiana danych klienta w pętli for
+    fields_list = ["ID","NAME","SECOND NAME","ADRES","POST CODE","CITY","EMAIL ADRESS","EMAIL SUBSCRIPTION","NATIONALITY"]
+    for c in range(1,9):
+        print(list_of_customers[int(to_update)][c])
+        input_text = f"Put new {fields_list[c]} : "
+        nowa_wartosc = input(input_text)
+        if nowa_wartosc != "":
+            list_of_customers[int(to_update)][c] = nowa_wartosc
 
-    print(list_of_customers[int(to_update)][2])
-    nowa_wartosc = input("Put new second name : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][2] = nowa_wartosc
+    # print(list_of_customers[int(to_update)][2])
+    # nowa_wartosc = input("Put new second name : ")
+    # if nowa_wartosc != "":
+    #     list_of_customers[int(to_update)][2] = nowa_wartosc
 
-    print(list_of_customers[int(to_update)][3])
-    nowa_wartosc = input("Put new adress : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][3] = nowa_wartosc
+    # print(list_of_customers[int(to_update)][3])
+    # nowa_wartosc = input("Put new adress : ")
+    # if nowa_wartosc != "":
+    #     list_of_customers[int(to_update)][3] = nowa_wartosc
 
-    print(list_of_customers[int(to_update)][4])
-    nowa_wartosc = input("Put new post code : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][4] = nowa_wartosc
+    # print(list_of_customers[int(to_update)][4])
+    # nowa_wartosc = input("Put new post code : ")
+    # if nowa_wartosc != "":
+    #     list_of_customers[int(to_update)][4] = nowa_wartosc
 
-    print(list_of_customers[int(to_update)][5])
-    nowa_wartosc = input("Put new city : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][5] = nowa_wartosc
+    # print(list_of_customers[int(to_update)][5])
+    # nowa_wartosc = input("Put new city : ")
+    # if nowa_wartosc != "":
+    #     list_of_customers[int(to_update)][5] = nowa_wartosc
 
-    print(list_of_customers[int(to_update)][6])
-    nowa_wartosc = input("Put new email : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][6] = nowa_wartosc
+    # print(list_of_customers[int(to_update)][6])
+    # nowa_wartosc = input("Put new email : ")
+    # if nowa_wartosc != "":
+    #     list_of_customers[int(to_update)][6] = nowa_wartosc
 
-    print(list_of_customers[int(to_update)][7])
-    nowa_wartosc = input("Subscription [yes] or [no] : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][7] = nowa_wartosc
+    # print(list_of_customers[int(to_update)][7])
+    # nowa_wartosc = input("Subscription [yes] or [no] : ")
+    # if nowa_wartosc != "":
+    #     list_of_customers[int(to_update)][7] = nowa_wartosc
 
-    print(list_of_customers[int(to_update)][8])
-    nowa_wartosc = input("Put new nationality [Polish] : ")
-    if nowa_wartosc != "":
-        list_of_customers[int(to_update)][8] = nowa_wartosc
-
-
+    # print(list_of_customers[int(to_update)][8])
+    # nowa_wartosc = input("Put new nationality [Polish] : ")
+    # if nowa_wartosc != "":
+    #     list_of_customers[int(to_update)][8] = nowa_wartosc
 
 
 
-    #zapisanie listy z usuniętą pozycją do pliku
-    data = {}
-    data['customers_list'] = []
-    for d in range(0, len(list_of_customers) ):
-        data['customers_list'].append({
-            'ID': list_of_customers[d][0],
-            'name': list_of_customers[d][1],
-            'second_name': list_of_customers[d][2],
-            'adress': list_of_customers[d][3],
-            'post_code': list_of_customers[d][4],
-            'city': list_of_customers[d][5],
-            'email_adress': list_of_customers[d][6],
-            'email_subscription': list_of_customers[d][7],
-            'nationality': list_of_customers[d][8]
-        })
-    with open(CRM_FILE, 'w') as outfile:
-        json.dump(data, outfile)
+    crm.save_file(CRM_FILE, list_of_customers)
+
+    # #zapisanie listy z usuniętą pozycją do pliku
+    # data = {}
+    # data['customers_list'] = []
+    # for d in range(0, len(list_of_customers) ):
+    #     data['customers_list'].append({
+    #         'ID': list_of_customers[d][0],
+    #         'name': list_of_customers[d][1],
+    #         'second_name': list_of_customers[d][2],
+    #         'adress': list_of_customers[d][3],
+    #         'post_code': list_of_customers[d][4],
+    #         'city': list_of_customers[d][5],
+    #         'email_adress': list_of_customers[d][6],
+    #         'email_subscription': list_of_customers[d][7],
+    #         'nationality': list_of_customers[d][8]
+    #     })
+    # with open(CRM_FILE, 'w') as outfile:
+    #     json.dump(data, outfile)
 
 
 
