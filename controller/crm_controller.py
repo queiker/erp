@@ -2,91 +2,84 @@ from model.crm import crm  # importuje z pliku crm.py
 from view import terminal as view
 
 import json
-CRM_FILE = 'model/crm/database.txt'
+CRM_FILE = 'model/crm/crm.csv'
 
 def list_customers():
-    list_of_customers = crm.open_file(CRM_FILE)
-    #wypisanie na ekranie 
-    for i in range(0,len(list_of_customers)):
-        #print(list_of_customers[i]) stary kod
-        view.print_message(f"({i}) {list_of_customers[i]}")
 
-
+    list_of_customers = crm.read()
+    view.print_table(list_of_customers, ["id", "name", "email", "subscribed"])
+    
 def add_customer():
     
-    list_of_customers = crm.open_file(CRM_FILE)
+    list_of_customers = crm.read()
 
     #przypisanie do zmiennych danych wprowadzonych przez użytkownika
-    name = view.get_input("Put customer name : ")
-    second_name = view.get_input("Put customer second name : ")
-    adress = view.get_input("Put customer adress : ")
-    post_code = view.get_input("Put customer post code : ")
-    city = view.get_input("Put customer city : ")
-    email_adress = view.get_input("Put customer email adress : ")
-    email_subscription = view.get_input("Put customer email subscription [yes] or [no] : ")
-    nationality = view.get_input("Put customer nationality : ")
+    id = view.get_input("customer ID")
+    name = view.get_input("customer name")
+    email = view.get_input("customer email")
+    subscribed = view.get_input("customer subscribed [0] or [1]")
+    
     
     #dodanie do listy dwówymiarowej listy z danymi wprowadzonymi przez użytkownika
-    list_of_customers.append(['000',name,second_name,adress,post_code,city,email_adress,email_subscription,nationality])
+    list_of_customers.append([id, name, email, subscribed])
     
-    #zapisanie listy która zawiera dane z pliku i  wprowadzone od użytkownika
-    crm.save_file(CRM_FILE, list_of_customers)
+    # #zapisanie listy która zawiera dane z pliku i  wprowadzone od użytkownika
+    crm.write(list_of_customers)
 
 def update_customer():
     #poniższy kod otwiera plik z zapisanymi klientami i zapisuje do list_of_customers
-    list_of_customers = crm.open_file(CRM_FILE)
+    list_of_customers = crm.read()
 
     #wypisanie na ekranie listy klientów
-    for d in range(0,len(list_of_customers)):
-        view.print_message(f"({d}) {list_of_customers[d]}")
+ 
+    view.print_table(list_of_customers, ["id", "name", "email", "subscribed"])
+    
     #pobranie od użytkownika numeru klienta do zmiany danych
-    to_update = view.get_input("Put number of customer to update : ")
+    to_update = view.get_input("number of customer to update : ")
     
     
     #zmiana danych klienta w pętli for
-    fields_list = ["ID","NAME","SECOND NAME","ADRES","POST CODE","CITY","EMAIL ADRESS","EMAIL SUBSCRIPTION","NATIONALITY"]
-    for c in range(1,9):
-        print(list_of_customers[int(to_update)][c])
+    fields_list = ["id", "name", "email", "subscribed"]
+    for c in range(0,4):
+        print(list_of_customers[int(to_update)-1][c])
         input_text = f"Put new {fields_list[c]} : "
         nowa_wartosc = view.get_input(input_text)
         if nowa_wartosc != "":
-            list_of_customers[int(to_update)][c] = nowa_wartosc
+            list_of_customers[int(to_update)-1][c] = nowa_wartosc
 
 
-    crm.save_file(CRM_FILE, list_of_customers)
+    crm.write(list_of_customers)
 
 
 def delete_customer():
     
     #poniższy kod otwiera plik z zapisanymi klientami i zapisuje do list_of_customers
-    customer_counter = 0
-    with open(CRM_FILE) as json_file: #TODO:Trzeba zmienić nazwę pliku na CRM
-        data = json.load(json_file)
-        list_of_customers = []
-        #poniżej zapisanie danych z pliku do list_of_customers
-        for p in data['customers_list']:
-            list_of_customers.append([p['ID'],p['name'],p['second_name'],p['adress'],p['post_code'],p['city'],p['email_adress'],p['email_subscription'],p['nationality'] ])
-            customer_counter += 1
+    list_of_customers = crm.read()
 
     #wypisanie na ekranie listy klientów
-    for d in range(0,len(list_of_customers)):
-        print(f"({d}) {list_of_customers[d]}")
+    view.print_table(list_of_customers, ["id", "name", "email", "subscribed"])
+
     #pobranie od użytkownika numeru klienta do skasowania
-    to_pop = view.get_input("Put number of customer do delete : ")
+    to_pop = view.get_input("number of customer do delete")
     #skasowanie klienta z listy klientów
-    list_of_customers.pop(int(to_pop))
+    list_of_customers.pop(int(to_pop)-1)
 
     #zapisanie listy z usuniętą pozycją do pliku
-    crm.save_file(CRM_FILE, list_of_customers)
+    crm.write(list_of_customers)
 
 
 def get_subscribed_emails():
-    list_of_customers = crm.open_file(CRM_FILE)
-    print(list_of_customers)
+    list_of_customers = crm.read()
+
+    
+    list_of_subscribed = []
     #wypisanie na ekranie listy klientów
     for d in range(0,len(list_of_customers)):
-        if list_of_customers[d][7] == "yes" :
-            print(f"({d}) {list_of_customers[d][6]}")
+        if list_of_customers[d][3] == "1" :
+            list_of_subscribed.append([list_of_customers[d][2]])
+            #print(f"({d}) {list_of_customers[d][2]}")
+
+    view.print_table(list_of_subscribed, ["email"])
 
 
 def run_operation(option):
