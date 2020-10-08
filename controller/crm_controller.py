@@ -1,5 +1,6 @@
 from model.crm import crm  # importuje z pliku crm.py
 from view import terminal as view
+from model import util 
 
 import json
 CRM_FILE = 'model/crm/database.txt'
@@ -27,7 +28,7 @@ def add_customer():
     nationality = view.get_input("Put customer nationality : ")
     
     #dodanie do listy dwówymiarowej listy z danymi wprowadzonymi przez użytkownika
-    list_of_customers.append(['000',name,second_name,adress,post_code,city,email_adress,email_subscription,nationality])
+    list_of_customers.append([util.generate_id() ,name,second_name,adress,post_code,city,email_adress,email_subscription,nationality])
     
     #zapisanie listy która zawiera dane z pliku i  wprowadzone od użytkownika
     crm.save_file(CRM_FILE, list_of_customers)
